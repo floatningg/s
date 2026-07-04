@@ -640,26 +640,31 @@ local function r11_0()
     end
     if r39_0 and r39_0.WatermarkVisible then
       pcall(function()
+        -- 1. Initialize with Keybinds UI Theme colors
         if not r39_0.WatermarkBg then
           r39_0.WatermarkBg = Drawing.new("Square")
-          r39_0.WatermarkBg.Visible = false; r39_0.WatermarkBg.Filled = true; r39_0.WatermarkBg.Color = Color3.fromRGB(20, 20, 20); r39_0.WatermarkBg.Thickness = 0
+          r39_0.WatermarkBg.Visible = false; r39_0.WatermarkBg.Filled = true; 
+          r39_0.WatermarkBg.Color = Color3.fromRGB(15, 15, 15); r39_0.WatermarkBg.Thickness = 0; r39_0.WatermarkBg.ZIndex = 2
         end
         if not r39_0.WatermarkBgBorder then
           r39_0.WatermarkBgBorder = Drawing.new("Square")
-          r39_0.WatermarkBgBorder.Visible = false; r39_0.WatermarkBgBorder.Filled = true; r39_0.WatermarkBgBorder.Color = Color3.fromRGB(10, 10, 10); r39_0.WatermarkBgBorder.Thickness = 0
+          r39_0.WatermarkBgBorder.Visible = false; r39_0.WatermarkBgBorder.Filled = true; 
+          r39_0.WatermarkBgBorder.Color = Color3.fromRGB(30, 30, 30); r39_0.WatermarkBgBorder.Thickness = 0; r39_0.WatermarkBgBorder.ZIndex = 1
         end
         if not r39_0.WatermarkText then
           r39_0.WatermarkText = Drawing.new("Text")
-          r39_0.WatermarkText.Visible = false; r39_0.WatermarkText.Color = Color3.fromRGB(200, 200, 200); r39_0.WatermarkText.Outline = true; r39_0.WatermarkText.OutlineColor = Color3.new(0, 0, 0); r39_0.WatermarkText.Center = false; r39_0.WatermarkText.Size = 13; r39_0.WatermarkText.Font = 2
+          r39_0.WatermarkText.Visible = false; r39_0.WatermarkText.Color = Color3.fromRGB(200, 200, 200); r39_0.WatermarkText.Outline = true; r39_0.WatermarkText.OutlineColor = Color3.new(0, 0, 0); r39_0.WatermarkText.Center = false; r39_0.WatermarkText.Size = 13; r39_0.WatermarkText.Font = 2; r39_0.WatermarkText.ZIndex = 3
         end
         if not r39_0.WatermarkLabel then
           r39_0.WatermarkLabel = Drawing.new("Text")
-          r39_0.WatermarkLabel.Visible = false; r39_0.WatermarkLabel.Color = Color3.fromRGB(84, 101, 255); r39_0.WatermarkLabel.Outline = true; r39_0.WatermarkLabel.OutlineColor = Color3.new(0, 0, 0); r39_0.WatermarkLabel.Center = false; r39_0.WatermarkLabel.Size = 13; r39_0.WatermarkLabel.Font = 2; r39_0.WatermarkLabel.Text = "betterlirp ^_^"
+          r39_0.WatermarkLabel.Visible = false; r39_0.WatermarkLabel.Color = Color3.fromRGB(84, 101, 255); r39_0.WatermarkLabel.Outline = true; r39_0.WatermarkLabel.OutlineColor = Color3.new(0, 0, 0); r39_0.WatermarkLabel.Center = false; r39_0.WatermarkLabel.Size = 13; r39_0.WatermarkLabel.Font = 2; r39_0.WatermarkLabel.Text = "betterlirp ^_^"; r39_0.WatermarkLabel.ZIndex = 3
         end
+
         local r18_6, r22_6 = pcall(function()
           return math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue()) or 0
         end)
         if not r18_6 then r22_6 = 0 end
+        
         local r19_6 = game:GetService("Players").LocalPlayer and game:GetService("ReplicatedStorage"):FindFirstChild("Players") and game:GetService("ReplicatedStorage").Players:FindFirstChild(game:GetService("Players").LocalPlayer.Name)
         local r20_6 = r19_6 and r19_6:FindFirstChild("Status") and r19_6.Status:FindFirstChild("UAC") and r19_6.Status.UAC:FindFirstChild("Reports")
         local r21_6 = 0
@@ -669,26 +674,36 @@ local function r11_0()
             if r24_6 then r21_6 = r21_6 + r24_6 end
           end
         end
+        
         r39_0.Frames = r39_0.Frames + 1
         local r23_6 = tick()
         if r23_6 - r39_0.LastFpsUpdate >= 1 then
           r39_0.Fps = r39_0.Frames; r39_0.Frames = 0; r39_0.LastFpsUpdate = r23_6
         end
+        
         local r24_6 = string.format("fps: %d  |  %dms  |  %d reports", r39_0.Fps, r22_6, r21_6)
         local r25_6 = 12
         local r26_6 = r5_0.ViewportSize.Y / 1.55
+        
+        -- 2. Added safe fallbacks for TextBounds to prevent silent script crashes
         r39_0.WatermarkLabel.Position = Vector2.new(r25_6 + 14, r26_6 + 6)
         r39_0.WatermarkLabel.Visible = true
-        local r27_6 = r39_0.WatermarkLabel.TextBounds.X
+        
+        local r27_6 = (r39_0.WatermarkLabel.TextBounds and r39_0.WatermarkLabel.TextBounds.X) or 75
         local r28_6 = r27_6 + 20
+        
         r39_0.WatermarkText.Text = r24_6
         r39_0.WatermarkText.Position = Vector2.new(r25_6 + r28_6 + 8, r26_6 + 6)
         r39_0.WatermarkText.Visible = true
-        local r29_6 = r39_0.WatermarkText.TextBounds.X
+        
+        local r29_6 = (r39_0.WatermarkText.TextBounds and r39_0.WatermarkText.TextBounds.X) or 150
         local r30_6 = r28_6 + 8 + r29_6 + 12
+        
+        -- Positioning the matching dark outer outline and inner frame
         r39_0.WatermarkBgBorder.Position = Vector2.new(r25_6, r26_6)
         r39_0.WatermarkBgBorder.Size = Vector2.new(r30_6, 24)
         r39_0.WatermarkBgBorder.Visible = true
+        
         r39_0.WatermarkBg.Position = Vector2.new(r25_6 + 1, r26_6 + 1)
         r39_0.WatermarkBg.Size = Vector2.new(r30_6 - 2, 22)
         r39_0.WatermarkBg.Visible = true
@@ -6889,6 +6904,6 @@ if r4_0 then
 			end
 		end)
          r0_0("[5/5]", "^_^", 2.5)
-         r0_0("betterlirp ^_^", "initialized! press insert to open/close the menu.", 7)
+         r0_0("betterlirp ^_^", "initialized! press insert for the menu", 2.5)
 			return 
           end
