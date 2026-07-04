@@ -6889,6 +6889,6 @@ if r4_0 then
 			end
 		end)
          r0_0("[5/5]", "^_^", 2.5)
-         r0_0("betterlirp ^_^", "initialized! press insert for the menu", 2.5)
+         r0_0("betterlirp ^_^", "initialized! press insert to open/close the menu.", 7)
 			return 
           end
